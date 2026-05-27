@@ -1,0 +1,53 @@
+services:
+  # 1. Private MySQL Database Service
+  - type: pserv
+    name: ecoscan-mysql
+    runtime: docker
+    image: mysql:8.0
+    disk:
+      name: mysql-data
+      mountPath: /var/lib/mysql
+      sizeGB: 1
+    envVars:
+      - key: MYSQL_ROOT_PASSWORD
+        value: S@mpath2562
+      - key: MYSQL_DATABASE
+        value: ecoscan_db
+
+  # 2. Spring Boot Backend Web Service
+  - type: web
+    name: ecoscan-backend
+    runtime: java
+    buildCommand: mvn clean package -DskipTests
+    startCommand: java -jar target/ecoscan-backend-1.0.0.jar
+    rootDir: backend
+    envVars:
+      - key: DATABASE_URL
+        value: jdbc:mysql://ecoscan-mysql:3306/ecoscan_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - key: DATABASE_USER
+        value: root
+      - key: DATABASE_PASSWORD
+        value: S@mpath2562
+      - key: ALLOWED_ORIGINS
+        fromService:
+          type: web
+          name: ecoscan-frontend
+          property: url
+
+  # 3. React Frontend Static Site
+  - type: web
+    name: ecoscan-frontend
+    runtime: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    rootDir: frontend
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: ecoscan-backend
+          property: url

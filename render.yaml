@@ -15,12 +15,10 @@ services:
       - key: MYSQL_DATABASE
         value: ecoscan_db
 
-  # 2. Spring Boot Backend Web Service
+  # 2. Spring Boot Backend Web Service (Deployed via Docker)
   - type: web
     name: ecoscan-backend
-    runtime: java
-    buildCommand: mvn clean package -DskipTests
-    startCommand: java -jar target/ecoscan-backend-1.0.0.jar
+    runtime: docker
     rootDir: backend
     envVars:
       - key: DATABASE_URL
@@ -29,11 +27,8 @@ services:
         value: root
       - key: DATABASE_PASSWORD
         value: S@mpath2562
-      - key: ALLOWED_ORIGINS
-        fromService:
-          type: web
-          name: ecoscan-frontend
-          property: url
+      # The application is pre-configured to allow any *.onrender.com subdomain CORS origin automatically.
+      # You can add custom domains by defining ALLOWED_ORIGINS here or in the Render Dashboard.
 
   # 3. React Frontend Static Site
   - type: web
@@ -47,8 +42,7 @@ services:
         source: /*
         destination: /index.html
     envVars:
+      # Change the value below if you rename the backend service during Blueprint creation.
+      # Format: https://[backend-service-name].onrender.com
       - key: VITE_API_URL
-        fromService:
-          type: web
-          name: ecoscan-backend
-          property: url
+        value: https://ecoscan-backend.onrender.com

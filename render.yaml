@@ -2,8 +2,9 @@ services:
   # 1. Private MySQL Database Service
   - type: pserv
     name: ecoscan-mysql
-    runtime: docker
-    image: mysql:8.0
+    runtime: image
+    image:
+      url: mysql:8.0
     disk:
       name: mysql-data
       mountPath: /var/lib/mysql

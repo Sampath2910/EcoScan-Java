@@ -1,7 +1,9 @@
 import axios from 'axios'
 
 const client = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_URL 
+    ? (import.meta.env.VITE_API_URL.endsWith('/') ? `${import.meta.env.VITE_API_URL}api` : `${import.meta.env.VITE_API_URL}/api`)
+    : '/api',
   withCredentials: true,  // send session cookies cross-origin
   headers: { 'Content-Type': 'application/json' },
   timeout: 30000  // 30 second timeout

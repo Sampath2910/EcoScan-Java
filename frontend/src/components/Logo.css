@@ -1,0 +1,120 @@
+/* Professional Logo Styling */
+
+@keyframes spinClockwise {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes spinCounterClockwise {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
+
+@keyframes scanSweep {
+  0%, 100% { transform: translateY(-12px); opacity: 0.35; }
+  50%      { transform: translateY(12px); opacity: 0.95; }
+}
+
+@keyframes globePulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.04); }
+}
+
+.logo-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.logo-svg {
+  display: block;
+  overflow: visible;
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+/* Base transforms and origin definitions */
+.logo-arrows {
+  transform-origin: 50px 46px;
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.logo-hud-ring {
+  transform-origin: 50px 46px;
+}
+
+.logo-globe-scaler {
+  transform-origin: 0px 0px;
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.logo-scan-line {
+  transform-origin: 50px 46px;
+}
+
+/* Animated variant styling */
+.logo-animated .logo-arrows {
+  animation: spinClockwise 16s linear infinite;
+}
+
+.logo-animated .logo-hud-ring {
+  animation: spinCounterClockwise 24s linear infinite;
+}
+
+.logo-animated .logo-scan-line {
+  animation: scanSweep 3.5s ease-in-out infinite;
+}
+
+.logo-animated .logo-globe-scaler {
+  animation: globePulse 5s ease-in-out infinite;
+}
+
+/* Hover effects */
+.logo-wrapper:hover .logo-svg {
+  filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.35))
+          drop-shadow(0 0 4px rgba(52, 211, 153, 0.2));
+}
+
+.logo-wrapper:hover .logo-arrows {
+  animation-duration: 5s; /* Speed up spin on hover */
+  filter: brightness(1.08);
+}
+
+.logo-wrapper:hover .logo-globe-scaler {
+  transform: scale(1.08); /* Expand center globe slightly on hover */
+}
+
+.logo-wrapper:hover .logo-scan-line {
+  animation-duration: 1.5s; /* Speed up scanning sweep on hover */
+  filter: brightness(1.2) drop-shadow(0 0 2.5px #10b981);
+}
+
+/* Text styling */
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.logo-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #10b981;
+  line-height: 1;
+  letter-spacing: -0.5px;
+}
+
+.logo-subtitle {
+  font-size: 0.65rem;
+  color: #34d399;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-top: 0.2rem;
+}
+
+@media (max-width: 768px) {
+  .logo-title    { font-size: 1rem; }
+  .logo-subtitle { font-size: 0.6rem; }
+}

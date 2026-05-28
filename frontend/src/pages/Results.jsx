@@ -1,6 +1,7 @@
 import React from 'react'
 import { useLocation, useNavigate, Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
+import { getMediaUrl } from '../api/client'
 
 const LABEL_ICONS = {
   plastic: '🧴', glass: '🫙', metal: '🥫',
@@ -46,7 +47,7 @@ export default function Results() {
           <div className="results-grid">
             {/* Image */}
             <div className="result-image-card">
-              <img src={result.imageUrl} alt="Classified waste" className="result-img" />
+              <img src={getMediaUrl(result.imageUrl)} alt="Classified waste" className="result-img" />
             </div>
 
             {/* Result */}

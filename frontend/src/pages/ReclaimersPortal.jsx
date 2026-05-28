@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import client from '../api/client'
+import client, { getMediaUrl } from '../api/client'
 import Navbar from '../components/Navbar'
 
 export default function ReclaimersPortal() {
@@ -70,7 +70,7 @@ export default function ReclaimersPortal() {
                 {uploads.map(u => (
                   <tr key={u.id}>
                     <td>
-                      <img src={u.imageUrl} alt={u.label} className="table-thumb" />
+                      <img src={getMediaUrl(u.imageUrl)} alt={u.label} className="table-thumb" />
                     </td>
                     <td>
                       <span className="badge badge-green">{u.label}</span>

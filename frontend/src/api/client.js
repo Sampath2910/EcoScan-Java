@@ -132,4 +132,25 @@ export const handleApiError = (error) => {
   }
 }
 
+/**
+ * Helper function to resolve absolute image URL relative to backend domain
+ */
+export const getMediaUrl = (url) => {
+  if (!url) return ''
+  if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:')) {
+    return url
+  }
+  
+  let baseUrl = import.meta.env.VITE_API_URL || ''
+  if (baseUrl) {
+    if (baseUrl.endsWith('/')) {
+      baseUrl = baseUrl.slice(0, -1)
+    }
+    const normalizedUrl = url.startsWith('/') ? url : `/${url}`
+    return `${baseUrl}${normalizedUrl}`
+  }
+  
+  return url
+}
+
 export default client

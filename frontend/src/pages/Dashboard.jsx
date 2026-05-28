@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import client from '../api/client'
+import client, { getMediaUrl } from '../api/client'
 import Navbar from '../components/Navbar'
 import { Link } from 'react-router-dom'
 
@@ -72,7 +72,7 @@ export default function Dashboard() {
             <div className="uploads-grid">
               {uploads.map(u => (
                 <div key={u.id} className="upload-card">
-                  <img src={u.imageUrl} alt={u.materialLabel} className="upload-thumb" />
+                  <img src={getMediaUrl(u.imageUrl)} alt={u.materialLabel} className="upload-thumb" />
                   <div className="upload-info">
                     <div className="upload-label">
                       <span className={`badge ${u.isRecyclable ? 'badge-green' : 'badge-red'}`}>

@@ -56,7 +56,11 @@ public class JwtSession implements HttpSession {
         if (invalidated) {
             throw new IllegalStateException("Session already invalidated");
         }
-        return attributes.get(name);
+        Object value = attributes.get(name);
+        if ("userId".equals(name) && value instanceof Number number) {
+            return number.longValue();
+        }
+        return value;
     }
 
     @Override

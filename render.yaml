@@ -31,6 +31,8 @@ services:
         value: none
       - key: SESSION_COOKIE_SECURE
         value: "true"
+      - key: JWT_SECRET
+        generateValue: true
       # The application is pre-configured to allow any *.onrender.com subdomain CORS origin automatically.
       # You can add custom domains by defining ALLOWED_ORIGINS here or in the Render Dashboard.
 

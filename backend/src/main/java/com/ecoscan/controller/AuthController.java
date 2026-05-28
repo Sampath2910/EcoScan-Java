@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.Optional;
+import com.ecoscan.security.JwtUtil;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -56,11 +57,19 @@ public class AuthController {
             session.setAttribute("username", user.getUsername());
             session.setAttribute("userRole", user.getRole());
 
+            String token = JwtUtil.generateToken(Map.of(
+                    "userId",   user.getId(),
+                    "email",    user.getEmail(),
+                    "username", user.getUsername(),
+                    "userRole", user.getRole()
+            ));
+
             return ResponseEntity.ok(ApiResponse.ok("Login successful.", Map.of(
                     "userId",   user.getId(),
                     "username", user.getUsername(),
                     "email",    user.getEmail(),
-                    "role",     user.getRole()
+                    "role",     user.getRole(),
+                    "token",    token
             )));
         }
         return ResponseEntity.status(401).body(ApiResponse.error("Invalid email or password."));

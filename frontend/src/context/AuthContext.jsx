@@ -11,19 +11,32 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     client.get('/auth/me')
       .then(res => setUser(res.data.data))
-      .catch(() => setUser(null))
+      .catch(() => {
+        setUser(null)
+        localStorage.removeItem('token')
+      })
       .finally(() => setLoading(false))
   }, [])
 
   const login = async (email, password) => {
     const res = await client.post('/auth/login', { email, password })
-    setUser(res.data.data)
+    const userData = res.data.data
+    if (userData && userData.token) {
+      localStorage.setItem('token', userData.token)
+    }
+    setUser(userData)
     return res.data
   }
 
   const logout = async () => {
-    await client.post('/auth/logout')
-    setUser(null)
+    try {
+      await client.post('/auth/logout')
+    } catch (err) {
+      console.error('Logout error:', err)
+    } finally {
+      localStorage.removeItem('token')
+      setUser(null)
+    }
   }
 
   return (

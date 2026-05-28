@@ -19,6 +19,13 @@ client.interceptors.request.use(
     // Add timestamp for monitoring
     config.metadata = { startTime: Date.now() }
     
+    // Attach authorization token if present in localStorage
+    const token = localStorage.getItem('token')
+    if (token) {
+      config.headers = config.headers || {}
+      config.headers['Authorization'] = `Bearer ${token}`
+    }
+    
     // Emit loading event (can be used for global loading indicators)
     window.dispatchEvent(new CustomEvent('api:request:start', { detail: config }))
     
@@ -64,6 +71,7 @@ client.interceptors.response.use(
       console.warn('Session expired. Redirecting to login...')
       sessionStorage.removeItem('user')
       localStorage.removeItem('user')
+      localStorage.removeItem('token')
       window.location.href = '/login'
       return Promise.reject(err)
     }
